@@ -1,0 +1,27 @@
+{
+  "name": "leveldb-index",
+  "version": "1.0.0",
+  "description": "indexing for leveldb via sublevel",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kphongph/leveldb-index.git"
+  },
+  "author": "Phongphun Kijsanayothin <kphongph@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kphongph/leveldb-index/issues"
+  },
+  "homepage": "https://github.com/kphongph/leveldb-index#readme",
+  "dependencies": {
+    "level-delete-range": "^0.1.0",
+    "level-hooks": "^4.5.0",
+    "level-sublevel": "^6.6.1",
+    "levelup": "^1.3.3",
+    "lodash.defaults": "^4.2.0",
+    "through2": "^2.0.3"
+  }
+}
