@@ -53,7 +53,7 @@ function createIndexStream(db, idxName, options) {
   return db.indexDb.createReadStream(options)
   .pipe(through2.obj(function (data, enc, callback) {
     if(options.include_doc) {
-      db.main.get(data.value, function (err, value) {
+      db.get(data.value, function (err, value) {
         callback(null, { 
           key: decode(data.key), 
           value: {'doc':value,'key':data.value}
@@ -132,7 +132,7 @@ function ensureIndex(db, idxName) {
       if (change.type === 'put') {
         addToIndex(change);
       } else if (change.type === 'del') {
-        db.main.get(change.key, function (err, value) {
+        db.get(change.key, function (err, value) {
           emit.call(db, change.key, value, function (valueToIndex) {
             db.indexDb.del(encode([idxName].concat(valueToIndex).concat(change.key)));
           }, options);
@@ -188,7 +188,7 @@ function getBy(db, index, key, options, cb) {
   var streamOpts = defaults(options, { start: key.concat(null), end: key.concat(undefined), limit: 1 });
   db.createIndexStream(index, streamOpts)
   .pipe(through2.obj(function (data, enc, callback) {
-    db.main.get(data.value, function (err, value) {
+    db.get(data.value, function (err, value) {
       callback(null, { key: data.value, value: value });
     });
   }))
