@@ -147,16 +147,25 @@ function ensureIndex(db, idxName) {
     cb = cb || noop;
     emit.call(db, dataToIndex.key, dataToIndex.value, function (valueToIndex) {
       count++;
-      db.indexDb.put(encode([idxName].concat(valueToIndex).concat(dataToIndex.key)),
-          dataToIndex.key,
-        function (err) {
-          count--;
-          cb(err);
+      // check update for index value changed
+      db.get(dataToIndex.key, function (err, value) {
+        emit.call(db, dataToIndex.key, value, function (oldValue) {
+          if(encode(oldValue) != encode(valueToIndex)) { 
+            db.indexDb.del(encode([idxName].concat(oldValue).concat(dataToIndex.key)));
+            db.indexDb.put(encode([idxName].concat(valueToIndex).concat(dataToIndex.key)),
+              dataToIndex.key,function (err) {
+                count--;
+                cb(err);
+            });
+          } else {
+            count--;
+            cb(null);
+          }
         });
+      });
     }, options);
   }
   
-
   var total =0;
   db.createReadStream().on('data', function(dataToIndex) {
     addToIndex(dataToIndex, function (err) {

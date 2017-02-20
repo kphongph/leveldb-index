@@ -1,5 +1,5 @@
 var levelup = require('levelup');
-var subindex = require('./subindex');
+var subindex = require('./index');
 
 var db = levelup('./databases/pkcourse',{valueEncoding:'json'});
 var ndb = subindex(levelup('./databases/pkcourse_n',{valueEncoding:'json'}));
