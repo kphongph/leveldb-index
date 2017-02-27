@@ -15,8 +15,8 @@ function decode(key) {
 }
 
 module.exports = levelIndex;
-function levelIndex(maindb) {
-  var db = sublevel(maindb);
+function levelIndex(db) {
+  // var db = sublevel(maindb);
   hooks(db);
 
   if (!db.ensureIndex) {
