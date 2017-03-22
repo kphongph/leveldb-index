@@ -187,6 +187,7 @@ function ensureIndex(db, idxName) {
     }, options);
   };
 
+  /* Manual Create Index by Read & Write Back
   var total =0;
   db.createReadStream().on('data', function(dataToIndex) {
     insertToIndex(dataToIndex, function (err) {
@@ -196,6 +197,7 @@ function ensureIndex(db, idxName) {
     ended = true;
     if (count === 0) cb();
   });
+  */
 }
 
 function dropIndex(db, idxName, cb) {
