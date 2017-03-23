@@ -187,6 +187,8 @@ function ensureIndex(db, idxName) {
     }, options);
   };
 
+  cb();
+
   /* Manual Create Index by Read & Write Back
   var total =0;
   db.createReadStream().on('data', function(dataToIndex) {
