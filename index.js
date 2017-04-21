@@ -163,7 +163,7 @@ function ensureIndex(db, idxName) {
                     cb(err);
               });
             }
-          });
+          },options);
         } else {
           // new key
           db.indexDb.put(encode([idxName].concat(valueToIndex).concat(dataToIndex.key)),
