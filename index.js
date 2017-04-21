@@ -150,6 +150,17 @@ function ensureIndex(db, idxName) {
       db.get(dataToIndex.key, function (err, value) {
         if(!err) {
           emit.call(db, dataToIndex.key, value, function (oldValue) {
+            db.indexDb.del(encode([idxName].concat(oldValue).concat(dataToIndex.key)));
+          },options);
+        }
+        db.indexDb.put(encode([idxName].concat(valueToIndex).concat(dataToIndex.key)),
+          dataToIndex.key,function (err) {
+            cb(err);
+        });
+
+        /*
+        if(!err) {
+          emit.call(db, dataToIndex.key, value, function (oldValue) {
             if(encode(oldValue) != encode(valueToIndex)) {
               db.indexDb.del(encode([idxName].concat(oldValue).concat(dataToIndex.key)),function() {                
                 db.indexDb.put(encode([idxName].concat(valueToIndex).concat(dataToIndex.key)),
@@ -171,6 +182,7 @@ function ensureIndex(db, idxName) {
               cb(err);
           });
         }
+        */
       });
     }, options);
   }
