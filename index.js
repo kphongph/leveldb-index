@@ -150,13 +150,19 @@ function ensureIndex(db, idxName) {
       db.get(dataToIndex.key, function (err, value) {
         if(!err) {
           emit.call(db, dataToIndex.key, value, function (oldValue) {
-            db.indexDb.del(encode([idxName].concat(oldValue).concat(dataToIndex.key)));
+            db.indexDb.del(encode([idxName].concat(oldValue).concat(dataToIndex.key)),function(err) {
+              db.indexDb.put(encode([idxName].concat(valueToIndex).concat(dataToIndex.key)),
+                dataToIndex.key,function (err) {
+                cb(err);
+              });      
+            });
           },options);
+        } else {
+          db.indexDb.put(encode([idxName].concat(valueToIndex).concat(dataToIndex.key)),
+            dataToIndex.key,function (err) {
+              cb(err);
+          });
         }
-        db.indexDb.put(encode([idxName].concat(valueToIndex).concat(dataToIndex.key)),
-          dataToIndex.key,function (err) {
-            cb(err);
-        });
 
         /*
         if(!err) {
